@@ -32,13 +32,13 @@
 void PrintMenu();
 
 /* Test all functions */
-void AutoTest(void);
+int AutoTest(void);
 
 int main()
 {
 
 #ifdef DEBUG
-    AutoTest();
+    //AutoTest();
 #else
     int rc;
     unsigned char R[WIDTH][HEIGHT];
@@ -57,17 +57,17 @@ int main()
 
     /* Noise() parameter */
     int n;
-
+    IMAGE *image = NULL;
     while (option != EXIT) {
         if (option == 1) {
             printf("Please input the file name to load: ");
             scanf("%s", fname);
-            rc = LoadImage(fname, R, G, B);
+            image = LoadImage(fname);
         }
 
         /* menu item 2 - 14 requires image is loaded first */
-        else if (option >= 2 && option < 9) {
-            if (rc != SUCCESS)     {
+        else if (option >= 2 && option < 15) {
+            if (image == NULL)     {
                 printf("No image is read.\n");
             }
             /* now image is loaded */
@@ -76,24 +76,24 @@ int main()
                     case 2:
                         printf("Please input the file name to save: ");
                         scanf("%s", fname);
-                        SaveImage(fname, R, G, B);
+                        SaveImage(fname,image);
                         break;
                     case 3:
-                        Aging(R, G, B);
+                        Aging(image);
                         printf("\"Aging\" operation is done!\n");
                         break;
                     case 4:
-                        Edge(R, G, B);
+                        Edge(image);
                         printf("\"Edge Detection\" operation is done!\n");
                         break;
                     case 5:
-                        Sharpen(R, G, B);
+                        Sharpen(image);
                         printf("\"Sharpen\" operation is done!\n");
 			break;
                     case 6:
                         printf("Please input noise percentage: ");
                         scanf("%d", &n);
-                        Noise(n, R, G, B);
+                        Noise(n, image);
                         printf("\"Noise\" operation is done!\n");
                         break;
                     case 7:
@@ -103,11 +103,11 @@ int main()
                         scanf("%hhu", &gbits);
                         printf("Enter the number of posterization bits for B chennel (1 to 8):");
                         scanf("%hhu", &bbits);
-                        Posterize(R, G, B, rbits, gbits, bbits);
+                        Posterize(image, rbits, gbits, bbits);
                         printf("\"Posterize\" operation is done!\n");
                         break;
                     case 8:
-                        NegativeFilter(R, G, B);
+                        NegativeFilter(image);
                         printf("\"Negative Filter\" operation is done!\n");
                         break;
 		    default:
@@ -118,7 +118,7 @@ int main()
         }
 
         else if (option == 22) {
-            AutoTest();
+            //AutoTest();
             rc = SUCCESS;    /* set returned code SUCCESS, since image is loaded */
         }
         else {
@@ -161,7 +161,7 @@ void PrintMenu()
 
 
 /* auto test*/
-
+/*
 void AutoTest(void) {
     unsigned char R[WIDTH][HEIGHT] , G[WIDTH][HEIGHT], B[WIDTH][HEIGHT];
     char fname[SLEN] = "pigeon";
@@ -208,5 +208,5 @@ void AutoTest(void) {
     printf("Negative tested!\n\n");
 #endif
 }
-
+*/
 /* vim: set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab : */

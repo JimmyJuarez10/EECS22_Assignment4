@@ -3,6 +3,10 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
 typedef struct {
 	unsigned int W;	    /* image width */
 	unsigned int H;     /* image height */

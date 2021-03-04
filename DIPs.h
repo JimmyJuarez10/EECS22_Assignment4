@@ -2,15 +2,15 @@
 #define DIPS_H_INCLUDED_
 
 #include "Constants.h"
-
+#include "Image.h"
 /* aging filter */
-void Aging(unsigned char R[WIDTH][HEIGHT], unsigned char G[WIDTH][HEIGHT], unsigned char B[WIDTH][HEIGHT]);
+IMAGE *Aging(IMAGE *image);
 
 /* sharpen filter */
-void Sharpen(unsigned char R[WIDTH][HEIGHT], unsigned char G[WIDTH][HEIGHT], unsigned char B[WIDTH][HEIGHT]);
+IMAGE *Sharpen(IMAGE *image);
 
 /* edge filter */
-void Edge(unsigned char R[WIDTH][HEIGHT], unsigned char G[WIDTH][HEIGHT], unsigned char B[WIDTH][HEIGHT]);
+IMAGE *Edge(IMAGE *image);
 
 #endif /* DIPS_H_INCLUDED_ */
 

@@ -2,15 +2,16 @@
 #define ADVANCED_H_INCLUDED_
 
 #include "Constants.h"
+#include "Image.h"
 
 /* noise filter */
-void Noise( int percentage, unsigned char R[WIDTH][HEIGHT], unsigned char G[WIDTH][HEIGHT], unsigned char B[WIDTH][HEIGHT]);
+IMAGE *Noise( int percentage, IMAGE *image );
 
 /* posterize filter */
-void Posterize(unsigned char R[WIDTH][HEIGHT], unsigned char G[WIDTH][HEIGHT], unsigned char B[WIDTH][HEIGHT], unsigned int rbits, unsigned int gbits, unsigned int bbits);
+IMAGE *Posterize(IMAGE *image, unsigned int rbits, unsigned int gbits, unsigned int bbits);
 
 /* negative filter */
-void NegativeFilter(unsigned char R[WIDTH][HEIGHT], unsigned char G[WIDTH][HEIGHT], unsigned char B[WIDTH][HEIGHT]);
+IMAGE *NegativeFilter(IMAGE *image);
 
 #endif /* ADVANCED_H_INCLUDED_ */
 

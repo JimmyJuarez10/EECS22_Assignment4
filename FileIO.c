@@ -109,7 +109,7 @@ IMAGE *LoadImage(const char *fname)
 #ifdef DEBUG
 		printf("%s was read successfully!\n", fname_tmp);
 #endif
-		fclose(File);
+        fclose(File);
 		return image;
 	}
 }
