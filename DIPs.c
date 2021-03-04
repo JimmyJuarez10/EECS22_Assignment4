@@ -33,15 +33,8 @@ IMAGE *Sharpen(IMAGE *image)
     int x, y;
     int tmpr = 0, tmpg = 0, tmpb = 0;	
     IMAGE *tempImage = CreateImage(image->W,image->H);
-
-    for (x = 0; x < image -> W; x++)
-    {   for(y = 0; y < image -> H; y++)
-        {   SetPixelR(tempImage,x,y,GetPixelR(image,x,y));
-            SetPixelG(tempImage,x,y,GetPixelG(image,x,y));
-            SetPixelB(tempImage,x,y,GetPixelB(image,x,y));
-        }
-    }
-
+    tempImage = CopyImage(image,tempImage);
+   
     for (x = 1; x < image->W - 1; x++)
     {   for (y = 1; y < image->H - 1; y++)
         {   
@@ -57,14 +50,7 @@ IMAGE *Sharpen(IMAGE *image)
         }
     }
     
-    for (x = 0; x < image -> W; x++)
-    {   for(y = 0; y < image -> H; y++)
-        {   
-	    SetPixelR(image,x,y,GetPixelR(tempImage,x,y));
-            SetPixelG(image,x,y,GetPixelG(tempImage,x,y));
-            SetPixelB(image,x,y,GetPixelB(tempImage,x,y));
-        }
-    }
+    image = CopyImage(tempImage,image); 
     
     DeleteImage(tempImage);
     return image;
@@ -73,18 +59,11 @@ IMAGE *Sharpen(IMAGE *image)
 // edge detection function
 IMAGE *Edge(IMAGE *image)
 {   
-    int             x, y, m, n, a, b;
+    int x, y, m, n, a, b;
     
     IMAGE *tempImage = CreateImage(image->W,image->H);
-
-    for (x = 0; x < image -> W; x++)
-    {   for(y = 0; y < image -> H; y++)
-	{   SetPixelR(tempImage,x,y,GetPixelR(image,x,y));
-	    SetPixelG(tempImage,x,y,GetPixelG(image,x,y));
-	    SetPixelB(tempImage,x,y,GetPixelB(image,x,y));
-	}
-    }
-
+    tempImage = CopyImage(image,tempImage);
+    
     int sumR = 0;   /* sum of the intensity differences with neighbors */
     int sumG = 0;
     int sumB = 0;

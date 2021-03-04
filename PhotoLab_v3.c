@@ -41,9 +41,6 @@ int main()
     //AutoTest();
 #else
     int rc;
-    unsigned char R[WIDTH][HEIGHT];
-    unsigned char B[WIDTH][HEIGHT];
-    unsigned char G[WIDTH][HEIGHT];
 
     int option;            /* user input option */
     char fname[SLEN];        /* input file name */
@@ -57,6 +54,10 @@ int main()
 
     /* Noise() parameter */
     int n;
+    int xOffest, yOffset, size;
+    int brightnessLevel,contrastLevel;
+    int enlarge_percentage;
+
     IMAGE *image = NULL;
     while (option != EXIT) {
         if (option == 1) {
@@ -110,6 +111,30 @@ int main()
                         NegativeFilter(image);
                         printf("\"Negative Filter\" operation is done!\n");
                         break;
+		    case 9:
+			printf("Please input the enlarging percentage (integer between 100 - 200):");
+			scanf("%d",&enlarge_percentage);
+			Enlarge(image,enlarge_percentage);
+			printf("\"Enlarge the image\" operation is done!\n");
+			break;
+		    case 10:
+			printf("Please enter the X offset value:");
+			scanf("%d", &xOffest);
+			printf("Please enter the Y offset value:");
+			scanf("%d", &yOffset);
+			printf("Please input the maximum cropped square size:");
+			scanf("%d", &size);
+			Square(image,xOffest,yOffset,size);
+			printf("\"Square\" operation is done!\n");
+			break;
+		    case 11:
+			printf("Plaese input the brightness level (integer between -255 - 255):");
+			scanf("%d", &brightnessLevel);
+			printf("Please input the contrast level (integer between -255 - 255):");
+			scanf("%d", &contrastLevel);
+			BrightnessandContrast(image,brightnessLevel,contrastLevel);
+			printf("\"Brightness and Contrast Adjustment\" operation is done!\n");
+			break;
 		    default:
                         break;
 
@@ -153,8 +178,11 @@ void PrintMenu()
     printf(" 6: Run noise filter\n");
     printf(" 7: Run posterize filter\n");
     printf(" 8: Run negative filter\n");
+    printf(" 9: Enlarge image\n");
+    printf("10: Create square (crop) image\n");
+    printf("11: Adjust brightness and contrast\n");
     printf("22: Test all functions\n");
-    printf("99: Exit\n");
+    printf("99: Exit");
     printf("\n-------------------------\n");
     printf("Please make your choice: ");
 }

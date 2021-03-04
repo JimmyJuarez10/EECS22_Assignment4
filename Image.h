@@ -46,4 +46,6 @@ unsigned int ImageWidth(const IMAGE *image);
 /* Return the image's height in pixels */
 unsigned int ImageHeight(const IMAGE *image);
 
+IMAGE *CopyImage(IMAGE *image, IMAGE *tempImage);
+
 #endif

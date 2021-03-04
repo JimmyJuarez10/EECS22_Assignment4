@@ -79,3 +79,19 @@ void DeleteImage(IMAGE *image)
 
    image = NULL; 
 }
+
+
+IMAGE *CopyImage(IMAGE *image,IMAGE *tempImage)
+{
+    int x,y;
+    for (x = 0; x < image -> W; x++)
+    {   for(y = 0; y < image -> H; y++)
+        {   SetPixelR(tempImage,x,y,GetPixelR(image,x,y));
+            SetPixelG(tempImage,x,y,GetPixelG(image,x,y));
+            SetPixelB(tempImage,x,y,GetPixelB(image,x,y));
+        }
+    }
+
+    return tempImage;
+}
+
