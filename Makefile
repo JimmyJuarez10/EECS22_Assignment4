@@ -39,7 +39,7 @@ all: PhotoLab_v3 PhotoLabTest
 ########### generate object files ###########
 #target to generate Test.o
 Test.o: Test.h Test.c
-	$(CC) $(CFLAGS) Test.c -o Test.c
+	$(CC) $(CFLAGS) Test.c -o Test.o
 
 #target to generate Image.o
 Image.o: Image.h Image.c
@@ -59,12 +59,12 @@ Advanced.o: Advanced.h Advanced.c Constants.h
 
 #target to generate PhotoLab.o
 #debugging is optional for regular PhotoLab (must hardcode in)
-PhotoLab.o: PhotoLab_v3.c DIPs.h Advanced.h FileIO.h Image.o Constants.h
+PhotoLab.o: PhotoLab_v3.c Test.h DIPs.h Advanced.h FileIO.h Image.h Constants.h
 	$(CC) $(CFLAGS) PhotoLab_v3.c -o PhotoLab.o
 
 #target to generate FileIO_DEBUG.o
 # hardcoding debug def because DEBUG version should always debug
-PhotoLab_DEBUG.o: PhotoLab_v3.c DIPs.h Advanced.h FileIO.h Image.o Constants.h
+PhotoLab_DEBUG.o: PhotoLab_v3.c Test.h DIPs.h Advanced.h FileIO.h Image.h Constants.h
 	$(CC) $(CFLAGS) $(DEBUG) -c PhotoLab_v3.c -o PhotoLab_DEBUG.o
 
 
@@ -79,12 +79,12 @@ libfilter.a: DIPs.o Advanced.o
 ########### generate executables ###########
 
 #target to generate PhotoLab
-PhotoLab_v3: PhotoLab.o FileIO.o Image.o libfilter.a
-	$(CC) $(LFLAGS) PhotoLab.o FileIO.o Image.o -L. -lfilter -o PhotoLab_v3 -lm
+PhotoLab_v3: PhotoLab.o FileIO.o Image.o Test.o libfilter.a
+	$(CC) $(LFLAGS) PhotoLab.o FileIO.o Image.o Test.o -L. -lfilter -o PhotoLab_v3 -lm
 
 #target to generate test
-PhotoLabTest: PhotoLab_DEBUG.o FileIO.o Image.o libfilter.a
-	$(CC) $(LFLAGS) PhotoLab_DEBUG.o FileIO.o Image.o -L. -lfilter -o PhotoLabTest -lm
+PhotoLabTest: PhotoLab_DEBUG.o FileIO.o Image.o Test.o libfilter.a
+	$(CC) $(LFLAGS) PhotoLab_DEBUG.o FileIO.o Image.o Test.o -L. -lfilter -o PhotoLabTest -lm
 
 #target to clean the directory
 clean:

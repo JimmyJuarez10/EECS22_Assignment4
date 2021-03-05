@@ -25,4 +25,7 @@ int AutoTest(void);
 /* brightness */
 #define BRIGHTNESS 20
 #define CONTRAST 200
+
+int AutoTest(void); 
+
 #endif /* TEST_H */

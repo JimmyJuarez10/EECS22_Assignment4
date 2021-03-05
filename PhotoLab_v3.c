@@ -31,14 +31,11 @@
 /* print a menu */
 void PrintMenu();
 
-/* Test all functions */
-int AutoTest(void);
-
 int main()
 {
 
 #ifdef DEBUG
-    //AutoTest();
+    AutoTest();
 #else
     int rc;
 
@@ -84,7 +81,7 @@ int main()
                         printf("\"Aging\" operation is done!\n");
                         break;
                     case 4:
-                        Edge(image);
+                        EdgeDetection(image);
                         printf("\"Edge Detection\" operation is done!\n");
                         break;
                     case 5:
@@ -94,7 +91,7 @@ int main()
                     case 6:
                         printf("Please input noise percentage: ");
                         scanf("%d", &n);
-                        Noise(n, image);
+                        Noise(image,n);
                         printf("\"Noise\" operation is done!\n");
                         break;
                     case 7:
@@ -143,7 +140,7 @@ int main()
         }
 
         else if (option == 22) {
-            //AutoTest();
+            AutoTest();
             rc = SUCCESS;    /* set returned code SUCCESS, since image is loaded */
         }
         else {
@@ -188,53 +185,4 @@ void PrintMenu()
 }
 
 
-/* auto test*/
-/*
-void AutoTest(void) {
-    unsigned char R[WIDTH][HEIGHT] , G[WIDTH][HEIGHT], B[WIDTH][HEIGHT];
-    char fname[SLEN] = "pigeon";
-
-    LoadImage(fname, R, G, B);
-    Aging(R, G, B);
-    SaveImage("aging", R, G, B);
-#ifdef DEBUG
-    printf("Aging tested!\n\n");
-#endif
-
-    LoadImage(fname, R, G, B);
-    Sharpen(R, G, B);
-    SaveImage("sharpen", R, G, B);
-#ifdef DEBUG
-    printf("Sharpen tested!\n\n");
-#endif
-
-    LoadImage(fname, R, G, B);
-    Edge(R, G, B);
-    SaveImage("edge", R, G, B);
-#ifdef DEBUG
-    printf("Edge tested!\n\n");
-#endif
-
-    LoadImage(fname, R, G, B);
-    Noise(30, R, G, B);
-    SaveImage("noise", R, G, B);
-#ifdef DEBUG
-    printf("Noise tested!\n\n");
-#endif
-
-    LoadImage(fname, R, G, B);
-    Posterize(R, G, B, 7, 7, 7);
-    SaveImage("posterize", R, G, B);
-#ifdef DEBUG
-    printf("Posterize tested!\n\n");
-#endif
-
-    LoadImage(fname, R, G, B);
-    NegativeFilter(R, G, B);
-    SaveImage("negative", R, G, B);
-#ifdef DEBUG
-    printf("Negative tested!\n\n");
-#endif
-}
-*/
 /* vim: set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab : */

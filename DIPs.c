@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <math.h>
 
-
 /* Example of DIP */
 /* age the image to make it look like old picture */
 IMAGE *Aging(IMAGE *image)
@@ -16,11 +15,11 @@ IMAGE *Aging(IMAGE *image)
     for( y = 0; y < image -> H; y++ ) {
         for( x = 0; x < image -> W; x++ ) {
 	    blue = (GetPixelR(image,x,y) + GetPixelG(image,x,y) + GetPixelB(image,x,y))/5;
-            SetPixelB(image,x,y, (blue < 0) ? 0 : (blue > 255) ? 255 : blue);
+            SetPixelB(image,x,y,CheckBounds(blue));
 	
 	    redAndGreen = (unsigned char)(GetPixelB(image,x,y)*1.6);
-	    SetPixelR(image,x,y,(redAndGreen < 0) ? 0 : (redAndGreen > 255) ? 255 : redAndGreen);
-	    SetPixelG(image,x,y,(redAndGreen < 0) ? 0 : (redAndGreen > 255) ? 255 : redAndGreen);
+	    SetPixelR(image,x,y,CheckBounds(redAndGreen));
+	    SetPixelG(image,x,y,CheckBounds(redAndGreen));
 	}
     }
 
@@ -35,71 +34,72 @@ IMAGE *Sharpen(IMAGE *image)
     IMAGE *tempImage = CreateImage(image->W,image->H);
     tempImage = CopyImage(image,tempImage);
    
-    for (x = 1; x < image->W - 1; x++)
-    {   for (y = 1; y < image->H - 1; y++)
+    for (x = 1; x < ImageWidth(image) - 1; x++)
+    {   for (y = 1; y < ImageHeight(image) - 1; y++)
         {   
 	    tmpr = 9 * GetPixelR(image,x,y) - GetPixelR(image,x-1,y-1) - GetPixelR(image,x-1,y) - GetPixelR(image,x-1,y+1) - GetPixelR(image,x,y-1) - GetPixelR(image,x,y+1) - GetPixelR(image,x+1,y-1) - GetPixelR(image,x+1,y) - GetPixelR(image,x+1,y+1);
             tmpg = 9 * GetPixelG(image,x,y) - GetPixelG(image,x-1,y-1) - GetPixelG(image,x-1,y) - GetPixelG(image,x-1,y+1) - GetPixelG(image,x,y-1) - GetPixelG(image,x,y+1) - GetPixelG(image,x+1,y-1) - GetPixelG(image,x+1,y) - GetPixelG(image,x+1,y+1);
             tmpb = 9 * GetPixelB(image,x,y) - GetPixelB(image,x-1,y-1) - GetPixelB(image,x-1,y) - GetPixelB(image,x-1,y+1) - GetPixelB(image,x,y-1) - GetPixelB(image,x,y+1) - GetPixelB(image,x+1,y-1) - GetPixelB(image,x+1,y) - GetPixelB(image,x+1,y+1);
 	    
-	    SetPixelR(tempImage,x,y,(tmpr > 255)?255:(tmpr < 0)?0:tmpr);
-            SetPixelG(tempImage,x,y,(tmpg > 255)?255:(tmpg < 0)?0:tmpg);
-            SetPixelB(tempImage,x,y,(tmpb > 255)?255:(tmpb < 0)?0:tmpb);
+	    SetPixelR(tempImage,x,y,CheckBounds(tmpr));
+	    SetPixelG(tempImage,x,y,CheckBounds(tmpg));
+            SetPixelB(tempImage,x,y,CheckBounds(tmpb));
 
 	    tmpr = tmpg = tmpb = 0;
         }
     }
     
     image = CopyImage(tempImage,image); 
-    
     DeleteImage(tempImage);
     return image;
 }
 
 // edge detection function
-IMAGE *Edge(IMAGE *image)
+IMAGE *EdgeDetection(IMAGE *image)
 {   
     int x, y, m, n, a, b;
-    
-    IMAGE *tempImage = CreateImage(image->W,image->H);
-    tempImage = CopyImage(image,tempImage);
-    
+    int imageHeight = ImageHeight(image);
+    int imageWidth = ImageWidth(image);
+
     int sumR = 0;   /* sum of the intensity differences with neighbors */
     int sumG = 0;
     int sumB = 0;
-    for (y = 1; y < image -> H - 1; y++){
-        for (x = 1; x < image -> W - 1; x++){
+
+    IMAGE *tempImage = CreateImage(image->W,image->H);
+    tempImage = CopyImage(image,tempImage);
+        for (y = 1; y < imageHeight - 1; y++){
+        for (x = 1; x < imageWidth - 1; x++){
             for (n = -1; n <= 1; n++){
                 for (m = -1; m <= 1; m++) {
-                    a = (x + m >= image -> W) ? image -> W - 1 : (x + m < 0) ? 0 : x + m;
-                    b = (y + n >= image -> H) ? image -> H - 1 : (y + n < 0) ? 0 : y + n;
+                    a = (x + m >= imageWidth) ? imageWidth - 1 : (x + m < 0) ? 0 : x + m;
+                    b = (y + n >= imageHeight) ? imageHeight - 1 : (y + n < 0) ? 0 : y + n;
                     sumR += (GetPixelR(tempImage,x,y) - GetPixelR(tempImage,a,b));
                     sumG += (GetPixelG(tempImage,x,y) - GetPixelG(tempImage,a,b));
                     sumB += (GetPixelB(tempImage,x,y) - GetPixelB(tempImage,a,b));
                 }
             }
-            SetPixelR(image,x,y,(sumR > MAX_PIXEL) ? MAX_PIXEL: (sumR < MIN_PIXEL) ? MIN_PIXEL: sumR);
-            SetPixelG(image,x,y,(sumG > MAX_PIXEL) ? MAX_PIXEL: (sumG < MIN_PIXEL) ? MIN_PIXEL: sumG);
-            SetPixelB(image,x,y,(sumB > MAX_PIXEL) ? MAX_PIXEL: (sumB < MIN_PIXEL) ? MIN_PIXEL: sumB);
+            SetPixelR(image,x,y,CheckBounds(sumR));
+            SetPixelG(image,x,y,CheckBounds(sumG));
+            SetPixelB(image,x,y,CheckBounds(sumB));
             sumR = sumG = sumB = 0;
         }
     }
     /* set all four borders to 0 */
-    for (y = 0; y < image -> H; y++) {
+    for (y = 0; y < imageHeight; y++) {
         SetPixelR(image,0,y,0);
         SetPixelG(image,0,y,0);
         SetPixelB(image,0,y,0);
-        SetPixelR(image,image->W-1,y,0);
-        SetPixelG(image,image->W-1,y,0);
-        SetPixelB(image,image->W-1,y,0);
+        SetPixelR(image,imageWidth-1,y,0);
+        SetPixelG(image,imageWidth-1,y,0);
+        SetPixelB(image,imageWidth-1,y,0);
     }
-    for (x = 0; x < image -> W; x++) {
+    for (x = 0; x < imageWidth; x++) {
         SetPixelR(image,x,0,0);
         SetPixelG(image,x,0,0);
         SetPixelB(image,x,0,0);
-        SetPixelR(image,x,image->H-1,0);
-        SetPixelG(image,x,image->H-1,0);
-        SetPixelB(image,x,image->H-1,0);
+        SetPixelR(image,x,imageHeight-1,0);
+        SetPixelG(image,x,imageHeight-1,0);
+        SetPixelB(image,x,imageHeight-1,0);
     }
 
     DeleteImage(tempImage);

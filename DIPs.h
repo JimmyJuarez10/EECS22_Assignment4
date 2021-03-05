@@ -10,7 +10,7 @@ IMAGE *Aging(IMAGE *image);
 IMAGE *Sharpen(IMAGE *image);
 
 /* edge filter */
-IMAGE *Edge(IMAGE *image);
+IMAGE *EdgeDetection(IMAGE *image);
 
 #endif /* DIPS_H_INCLUDED_ */
 

@@ -7,7 +7,7 @@
 
 int AutoTest(void) {
     int result;
-    const char fname[SLEN] = "drinks";
+    const char fname[SLEN] = "castle";
     
 
     IMAGE *image = NULL;

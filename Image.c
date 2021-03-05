@@ -1,47 +1,5 @@
 #include "Image.h"
 
-unsigned char GetPixelR(const IMAGE *image, unsigned int x,  unsigned int y)
-{
-    assert(image);
-    int width = image -> W;
-    return image -> R[x + (y * width)];
-}
-
-unsigned char GetPixelG(const IMAGE *image, unsigned int x,  unsigned int y)
-{
-    assert(image);
-    int width = image -> W;
-    return image -> G[x + (y * width)];
-}
-
-unsigned char GetPixelB(const IMAGE *image, unsigned int x,  unsigned int y)
-{
-    assert(image);
-    int width = image -> W;
-    return image -> B[x + (y * width)];
-}
-
-void SetPixelR(IMAGE *image, unsigned int x, unsigned int y, unsigned char r )
-{
-    assert(image);
-    int width = image -> W;
-    image -> R[x+ (y * width)] = r;
-}
-
-void SetPixelG(IMAGE *image, unsigned int x, unsigned int y, unsigned char g)
-{
-    assert(image);
-    int width = image -> W;
-    image -> G[x+ (y * width)] = g;
-}
-
-void SetPixelB(IMAGE *image, unsigned int x, unsigned int y, unsigned char b)
-{
-    assert(image);
-    int width = image -> W;
-    image -> B[x+ (y * width)] = b;
-}
-
 unsigned int ImageWidth(const IMAGE *image)
 {
     return image -> W;
@@ -51,6 +9,43 @@ unsigned int ImageHeight(const IMAGE *image)
 {
     return image -> H;
 }
+
+unsigned char GetPixelR(const IMAGE *image, unsigned int x,  unsigned int y)
+{
+    assert(image);
+    return image -> R[x + (y * ImageWidth(image))];
+}
+
+unsigned char GetPixelG(const IMAGE *image, unsigned int x,  unsigned int y)
+{
+    assert(image);
+    return image -> G[x + (y * ImageWidth(image))];
+}
+
+unsigned char GetPixelB(const IMAGE *image, unsigned int x,  unsigned int y)
+{
+    assert(image);
+    return image -> B[x + (y * ImageWidth(image))];
+}
+
+void SetPixelR(IMAGE *image, unsigned int x, unsigned int y, unsigned char r )
+{
+    assert(image);
+    image -> R[x+ (y * ImageWidth(image))] = r;
+}
+
+void SetPixelG(IMAGE *image, unsigned int x, unsigned int y, unsigned char g)
+{
+    assert(image);
+    image -> G[x+ (y * ImageWidth(image))] = g;
+}
+
+void SetPixelB(IMAGE *image, unsigned int x, unsigned int y, unsigned char b)
+{
+    assert(image);
+    image -> B[x+ (y * ImageWidth(image))] = b;
+}
+
 
 IMAGE *CreateImage(unsigned int Width, unsigned int Height)
 {
@@ -95,3 +90,7 @@ IMAGE *CopyImage(IMAGE *image,IMAGE *tempImage)
     return tempImage;
 }
 
+int CheckBounds(int value)
+{
+    return (value < 0) ? 0 : (value > 255) ? 255 : value;
+}

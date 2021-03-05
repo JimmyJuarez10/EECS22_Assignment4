@@ -48,4 +48,6 @@ unsigned int ImageHeight(const IMAGE *image);
 
 IMAGE *CopyImage(IMAGE *image, IMAGE *tempImage);
 
+int CheckBounds(int value);
+
 #endif
